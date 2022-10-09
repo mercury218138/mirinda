@@ -4,7 +4,7 @@
     /* Màu số điểm */
     --number_color: black;
     /* Màu background nút nhấn */
-    --button_color: red;
+    --button_color: #df7272;
 }
 
 
@@ -32,7 +32,7 @@ body {
 }
 
 #board_border{
-    background-color: white;
+    background-color: none;
     margin: 0 auto;
     display: flex;
     align-items: center;
@@ -72,7 +72,7 @@ body {
 }
 
 
-#rule_intro{
+#rule_intro_button{
     position: absolute;
     display: flex;
     width: 10em;
@@ -87,14 +87,15 @@ body {
     margin: 10px;
     border-radius: 2em;
     border: 0px;
+    cursor: pointer;
 }
-#rule_intro:hover{
+#rule_intro_button:hover{
     position: absolute;
     display: flex;
     /* justify-self:end; */
     align-self: end;
     background-color: var(--button_color);
-    color: yellow;
+    color: white;
     font-size: 25px;  
     margin: 20px;
 }

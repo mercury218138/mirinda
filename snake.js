@@ -30,6 +30,10 @@ var arrow_key = new Image();
 arrow_key.src = "./elements/arrow key.png";
 arrow_key.width = blockSize * rows / 2;
 arrow_key.height = blockSize * rows / 2;
+var rule_board = new Image();
+rule_board.src = "./elements/guide_to_play.png";
+rule_board.width = blockSize * cols;
+rule_board.height = blockSize * rows;
 
 arrow_key.id = "arrow_key";
 
@@ -55,15 +59,16 @@ window.onload = function() {
     context = board.getContext("2d"); //used for drawing on the board
 
     // Hàm hiện luật chơi
-    function rule_and_key(){
-        context.fillStyle= rule_board_color;
-        context.fillRect(0, 0, board.width, board.height);
-        context.font = "30px Comic Sans MS";
-        context.fillStyle = "white";
-        context.textAlign = "left";
-        context.fillText(rule, 0, board.height/2);
-    }
-    rule_and_key();
+    // function rule_and_key(){
+    //     context.fillStyle= rule_board_color;
+    //     context.fillRect(0, 0, board.width, board.height);
+    //     context.font = "30px Comic Sans MS";
+    //     context.fillStyle = "white";
+    //     context.textAlign = "left";
+    //     context.fillText(rule, 0, board.height/2);
+    // }
+    // rule_and_key();
+    context.drawImage(rule_board, board.width / 2 - rule_board.width / 2, board.height / 2 - rule_board.height / 2, rule_board.width, rule_board.height);
 
     // context.drawImage(arrow_key, board.width / 2 - arrow_key.width / 2, board.height / 2 - arrow_key.height / 2, arrow_key.width, arrow_key.height)
     
