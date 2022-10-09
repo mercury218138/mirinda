@@ -1,0 +1,148 @@
+:root {
+    /* Màu đất con rắn di chuyển */
+    --score_board: #df7272;
+    /* Màu số điểm */
+    --number_color: black;
+    /* Màu background nút nhấn */
+    --button_color: red;
+}
+
+
+body {
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+    background-image: url('./elements/Background.png');
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+#title-game{
+    color: none;
+    font-size: 50px;
+    font-family: 'Courier New', Courier, monospace;
+    /* display: hidden; */
+}
+
+#myVideo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%; 
+    min-height: 100%;
+}
+
+#board_border{
+    background-color: white;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 950px;
+    height: 500px;
+    border-radius: 20px;
+    margin-top: 12em;
+}
+
+.score{
+    display: block;
+    width: max-content;
+    height: 100px;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    /* float: right; */
+    right: 2em;
+    /* border-radius: 10%; */
+}
+
+.score-content{
+    color: var(--number_color);
+    font-size: 50px;
+    font-weight: bold;   
+    background-color: white;
+    border: 10px solid var(--score_board);
+}
+
+.score-name{
+    color: white;
+    font-size: 20px;
+    font-weight: bold;   
+    background-color: var(--score_board);
+    border: 10px solid var(--score_board);
+}
+
+
+#rule_intro{
+    position: absolute;
+    display: flex;
+    width: 10em;
+    height: 3em;
+    /* justify-self:end; */
+    align-self: end;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--button_color);
+    color: white;
+    font-size: 25px;    
+    margin: 10px;
+    border-radius: 2em;
+    border: 0px;
+}
+#rule_intro:hover{
+    position: absolute;
+    display: flex;
+    /* justify-self:end; */
+    align-self: end;
+    background-color: var(--button_color);
+    color: yellow;
+    font-size: 25px;  
+    margin: 20px;
+}
+
+#arrow_key{
+    opacity: 50%;
+}
+
+/* wheel of fortune */
+
+#wheelOfFortune {
+    display: flex;
+    position: absolute;
+    overflow: hidden;
+    /* justify-content:center;
+    align-items:center; */
+    justify-self: center;
+    align-self: center;
+}
+
+#wheel {
+display: block;
+}
+#spin {
+    font: 1.5rem/0 sans-serif;
+    user-select: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30%;
+    height: 30%;
+    margin: -15%;
+    background: #fff;
+    color: #fff;
+    box-shadow: 0 0 0 8px currentColor, 0 0px 15px 5px rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    transition: 0.8s;
+}
+
+#spin::after {
+    content: "";
+    position: absolute;
+    top: -17px;
+    border: 10px solid transparent;
+    border-bottom-color: currentColor;
+    border-top: none;
+  }

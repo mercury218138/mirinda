@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport", content="width=device-width, initial-scale=1.0">
+        <title>Snake</title>
+        <link rel="stylesheet" href="./snake.css">
+        <script src="./snake.js"></script>
+    </head>
+
+    <body>
+        <audio controls autoplay loop style="display:none;">
+            <source src="./elements/Theme song.mp3" type="audio/mpeg">
+        </audio>
+        <!-- <h1 id="title-game">Snake Game</h1> -->
+        <!-- Bảng điểm bên góc phải -->
+        <div class="score">
+            <div class="score-name">Thời gian</div>
+            <div class="score-content">
+                <p id="remain_time"></p>
+            </div>
+            <div class="score-name">Điểm</div>
+            <div class="score-content">
+                <p id="score_food"></p>
+            </div>            
+        </div>   
+        <!-- Màn hình trung tâm-->
+        <div id="board_border">
+            <!-- Màn hình game -->
+            <canvas id="board"></canvas>
+            <!-- Nút điều khiển -->
+            <button type="button" id="rule_intro" onclick="guide_to_play()">Let's go!</button>      
+            <!-- Vòng quay may mắn -->
+            <div id="wheelOfFortune" style="display:none;">
+                <canvas id="wheel" width="500" height="500">
+                </canvas>
+                <!-- <img src="./elements/Website Mirinda 12.png" width="50" height="100"> -->
+                <div id="spin">SPIN asd asd asd as dasd as dasd asd asd as d</div>
+            </div>  
+        </div>        
+    </body>
+</html>
