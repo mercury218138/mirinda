@@ -37,7 +37,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 950px;
+    /* width: 800px; */
     height: 500px;
     border-radius: 20px;
     margin-top: 12em;
@@ -46,7 +46,7 @@ body {
 .score{
     display: block;
     width: max-content;
-    height: 100px;
+    height: 10em;
     align-items: center;
     justify-content: center;
     position: absolute;
@@ -57,7 +57,7 @@ body {
 
 .score-content{
     color: var(--number_color);
-    font-size: 50px;
+    font-size: 2em;
     font-weight: bold;   
     background-color: white;
     border: 10px solid var(--score_board);
@@ -65,7 +65,7 @@ body {
 
 .score-name{
     color: white;
-    font-size: 20px;
+    font-size:xx-large;
     font-weight: bold;   
     background-color: var(--score_board);
     border: 10px solid var(--score_board);
@@ -88,6 +88,8 @@ body {
     border-radius: 2em;
     border: 0px;
     cursor: pointer;
+    /* transform: rotate(90deg); */
+    /* transform: rotate(90deg); */
 }
 #rule_intro_button:hover{
     position: absolute;
@@ -114,10 +116,12 @@ body {
     align-items:center; */
     justify-self: center;
     align-self: center;
+    /* height: 200px;
+    width: 200px; */
 }
 
 #wheel {
-display: block;
+    display: block;
 }
 #spin {
     font: 1.5rem/0 sans-serif;
@@ -146,4 +150,4 @@ display: block;
     border: 10px solid transparent;
     border-bottom-color: currentColor;
     border-top: none;
-  }
+}

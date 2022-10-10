@@ -1,8 +1,15 @@
-
 //board
+
+var screen_width = window.innerWidth;
+var screen_height = window.innerHeight;
+// console.log(screen_width);
+// console.log(screen_height);
+
+// default (width, height) = (1536, 722)
+var blockSize = Math.floor(45 / 1536 * screen_width);
 var blockSize = 45;
 var rows = 10;
-var cols = 20;
+var cols = 15;
 var board;
 var context; 
 
@@ -21,19 +28,42 @@ var foodX;
 var foodY;
 
 var gameOver = false;
-
+// Image.prototype.rotate = function(angle) {
+//     var c = document.createElement("canvas");
+//     c.width = this.width;
+//     c.height = this.height;    
+//     var ctx = c.getContext("2d");    
+//     ctx.rotate(angle);
+//     var imgData = ctx.createImageData(this.width, this.height);
+//     ctx.putImageData(imgData);
+//     return new Image(imgData);
+// }
 var food = new Image();
 food.src = "./elements/food.png";
 food.width = blockSize;
 food.height = blockSize * 2;
+food.style = "transform: rotate(90deg)";
 var arrow_key = new Image();
 arrow_key.src = "./elements/arrow key.png";
 arrow_key.width = blockSize * rows / 2;
 arrow_key.height = blockSize * rows / 2;
 var rule_board = new Image();
 rule_board.src = "./elements/guide_to_play.png";
-rule_board.width = blockSize * cols;
-rule_board.height = blockSize * rows;
+// rule_board.width = 1366 / 2;
+// rule_board.height = 768 / 2;
+// console.log(rule_board.width);
+var snake_img = [
+    new Image(), new Image(), new Image()
+]
+snake_img[0].src = "./elements/snake_head.png";
+snake_img[1].src = "./elements/snake_body.png";
+snake_img[2].src = "./elements/snake_tail.png";
+for (let i = 0; i < 3; i++){
+    snake_img[i].height = blockSize;
+    snake_img[i].width = blockSize;
+}
+// snake_img[0].rotate(90);
+
 
 arrow_key.id = "arrow_key";
 
@@ -68,19 +98,24 @@ window.onload = function() {
     //     context.fillText(rule, 0, board.height/2);
     // }
     // rule_and_key();
-    context.drawImage(rule_board, board.width / 2 - rule_board.width / 2, board.height / 2 - rule_board.height / 2, rule_board.width, rule_board.height);
-
+    context.drawImage(rule_board, Math.max(0, board.width / 2 - rule_board.width / 2), Math.max(0, board.height / 2 - rule_board.height / 2), Math.min(rule_board.width, board.width), Math.min(rule_board.height, board.height));
+    // console.log(rule_board.style.transform);
     // context.drawImage(arrow_key, board.width / 2 - arrow_key.width / 2, board.height / 2 - arrow_key.height / 2, arrow_key.width, arrow_key.height)
     
 }
 
 // Hàm hướng dẫn dùng arrow key để chơi
 function guide_to_play(){
-    document.getElementById("rule_intro").remove();
+    document.getElementById("rule_intro_button").remove();
+
+    document.getElementById('board_border').style.backgroundColor = 'white';
+    document.getElementById('board_border').style.width = String(blockSize * (cols + 1)) + 'px';
+
+    // document.getElementById('score').style.height = String(100 / 722 * screen_height) + 'px';
     placeFood();
     start_time = 0;
     update();
-    context.drawImage(arrow_key, board.width / 2 - arrow_key.width / 2, board.height / 2 - arrow_key.height / 2, arrow_key.width, arrow_key.height);
+    // context.drawImage(arrow_key, board.width / 2 - arrow_key.width / 2, board.height / 2 - arrow_key.height / 2, arrow_key.width, arrow_key.height);
     document.addEventListener("keyup", start_game_funct);
 }
 
@@ -116,7 +151,7 @@ function lucky_wheel(){
         {color:"#bf0", label:"500", src: food},
     ];
     
-      // Generate random float in range min-max:
+    // Generate random float in range min-max:
     const rand = (m, M) => Math.random() * (M - m) + m;
     
     const tot = sectors.length;
@@ -170,46 +205,46 @@ function lucky_wheel(){
     };
     
     const frame = () => {
-    
-    if (!isSpinning) return;
-    
-    if (angVel >= angVelMax) isAccelerating = false;
-    
-    // Accelerate
-    if (isAccelerating) {
-        angVel ||= angVelMin; // Initial velocity kick
-        angVel *= 1.06; // Accelerate
-    }
-    
-    // Decelerate
-    else {
-        isAccelerating = false;
-        angVel *= friction; // Decelerate by friction  
-    
-        // SPIN END:
-        if (angVel < angVelMin) {
-        isSpinning = false;
-        angVel = 0; 
+        
+        if (!isSpinning) return;
+        
+        if (angVel >= angVelMax) isAccelerating = false;
+        
+        // Accelerate
+        if (isAccelerating) {
+            angVel ||= angVelMin; // Initial velocity kick
+            angVel *= 1.06; // Accelerate
         }
-    }
-    
-    ang += angVel; // Update angle
-    ang %= TAU;    // Normalize angle
-    rotate();      // CSS rotate!
+        
+        // Decelerate
+        else {
+            isAccelerating = false;
+            angVel *= friction; // Decelerate by friction  
+            
+            // SPIN END:
+            if (angVel < angVelMin) {
+                isSpinning = false;
+                angVel = 0; 
+            }
+        }
+        
+        ang += angVel; // Update angle
+        ang %= TAU;    // Normalize angle
+        rotate();      // CSS rotate!
     };
-    
+
     const engine = () => {
-    frame();
-    requestAnimationFrame(engine)
+        frame();
+        requestAnimationFrame(engine)
     };
-    
+
     elSpin.addEventListener("click", () => {
-    if (isSpinning) return;
-    isSpinning = true;
-    isAccelerating = true;
-    angVelMax = rand(0.25, 0.40);
+        if (isSpinning) return;
+        isSpinning = true;
+        isAccelerating = true;
+        angVelMax = rand(0.25, 0.40);
     });
-    
+
     // INIT!
     sectors.forEach(drawSector);
     rotate(); // Initial rotation
@@ -217,7 +252,47 @@ function lucky_wheel(){
 }
 
 // Hàm xử lý game
-function update() {
+var cur_direct = 0;
+
+
+function drawImage(img, x, y, width, height, deg, flip, flop, center) {
+
+    context.save();
+    if (deg == 180) {
+        flip = true;
+        deg = 0;
+    }
+    
+    if(typeof width === "undefined") width = img.width;
+    if(typeof height === "undefined") height = img.height;
+    if(typeof center === "undefined") center = false;
+    
+    // Set rotation point to center of image, instead of top/left
+    if(center) {
+        x -= width/2;
+        y -= height/2;
+    }
+    
+    // Set the origin to the center of the image
+    context.translate(x + width/2, y + height/2);
+    
+    // Rotate the canvas around the origin
+    var rad = 2 * Math.PI - deg * Math.PI / 180;    
+    context.rotate(rad);
+    
+    // Flip/flop the canvas
+    if(flip) flipScale = -1; else flipScale = 1;
+    if(flop) flopScale = -1; else flopScale = 1;
+    context.scale(flipScale, flopScale);
+    
+    // Draw the image    
+    context.drawImage(img, -width/2, -height/2, width, height);
+    
+    context.restore();
+}
+
+
+function update() {    
     if (gameOver) {
         if (gameStop) return;
         alert("Chúc bạn may mắn lần sau");
@@ -229,13 +304,13 @@ function update() {
         console.log("Winner!");
         lucky_wheel();
         gameOver = true;
-        gameStop = false; // Chúc bạn may mắn lần sau nữa là kết thúc
+        return;
     }
     const dd = new Date();
     let current_time = dd.getTime();
-
+    
     let remain_time = start_time != 0 ? timeTotal - Math.round((current_time - start_time) / 1000) : 30;
-
+    
     if (remain_time < 0) {
         gameStop = true;
         gameOver = true;
@@ -255,37 +330,73 @@ function update() {
     }
     document.getElementById('score_food').innerHTML = snakeBody.length;
     context.fillStyle=board_color;
-    context.fillRect(0, 0, board.width, board.height);
-    
-    // context.fillStyle="red";
-    // context.fillRect(foodX, foodY, blockSize, blockSize);
-    
+    context.fillRect(0, 0, board.width, board.height);    
     context.drawImage(food, foodX, foodY, food.width, food.height)
 
     // Condition satisfied to eat food
     let cond1 = (snakeX == foodX && snakeY == foodY);
     let cond2 = (snakeX == foodX && snakeY == foodY + blockSize);
     if (cond1 || cond2) {
-        snakeBody.push([foodX, foodY]);
+        if (snakeBody.length){
+            snakeBody.push({'x': foodX,'y': foodY, 'degree': snakeBody[snakeBody.length - 1].degree});
+        }
+        else{
+            snakeBody.push({'x': foodX,'y': foodY, 'degree': cur_direct});
+        }
         placeFood();
     }
+
 
     // Draw body snake
     for (let i = snakeBody.length-1; i > 0; i--) {
         snakeBody[i] = snakeBody[i-1];
     }
     if (snakeBody.length) {
-        snakeBody[0] = [snakeX, snakeY];
+        snakeBody[0] = {'x': snakeX,'y': snakeY, 'degree': cur_direct};
+        //snakeBody[0] = [snakeX, snakeY];
     }
+    console.log(cur_direct);
 
     context.fillStyle= snake_color;
     snakeX += velocityX * blockSize;
     snakeY += velocityY * blockSize;
-    context.fillRect(snakeX, snakeY, blockSize, blockSize);
+    
+    
+    // context.fillRect(snakeX, snakeY, blockSize, blockSize);
+    // snake_img[0] = document.getElementById('snake_head');
+    // let tmp = snake_img[0];
+    // switch(cur_direct){
+    //     case 0:
+            
+    //         break;
+    //     case 90:
+    //         drawImage(snake_img[0], snakeX, snakeY, blockSize, blockSize, 90);
+    //         break;
+    //     case 180:
+    //         drawImage(snake_img[0], snakeX, snakeY, blockSize, blockSize, 0, true);
+    //         break;
+    //     case -90:
+    //         drawImage(snake_img[0], snakeX, snakeY, blockSize, blockSize, -90);
+    //         break;
+    //     default:
+    //         break;
+    // }
+    drawImage(snake_img[0], snakeX, snakeY, blockSize, blockSize, cur_direct);
+    // drawImage(snake_img[0], snakeX, snakeY, blockSize, blockSize, cur_direct);
+    // drawRotatedImage(snake_img[0], Math.PI / 2, snakeX, snakeY, blockSize, blockSize);
+    // drawRotatedImage(snake_img[0], cur_direct, snakeX, snakeY, blockSize, blockSize);
+    // context.rotate(0);
     for (let i = 0; i < snakeBody.length; i++) {
-        if (0 <= snakeBody[i][0] && snakeBody[i][0] < cols*blockSize){
-            if (0 <= snakeBody[i][1] && snakeBody[i][1] < rows*blockSize){
-                context.fillRect(snakeBody[i][0], snakeBody[i][1], blockSize, blockSize);
+        if (0 <= snakeBody[i].x && snakeBody[i].x < cols*blockSize){
+            if (0 <= snakeBody[i].y && snakeBody[i].y < rows*blockSize){
+                // context.fillRect(snakeBody[i].x, snakeBody[i].y, blockSize, blockSize);
+                // context.drawImage(snake_img[1], snakeBody[i][0], snakeBody[i][1], blockSize, blockSize);
+                if (i == snakeBody.length - 1){
+                    drawImage(snake_img[2], snakeBody[i].x, snakeBody[i].y, blockSize, blockSize, snakeBody[i].degree);
+                }
+                else{
+                    drawImage(snake_img[1], snakeBody[i].x, snakeBody[i].y, blockSize, blockSize, snakeBody[i].degree);
+                }
             }
         }
     }
@@ -313,6 +424,7 @@ function update() {
             alert("Game Over");
         }
     }
+    // drawImage(snake_img[0], snakeX, snakeY, blockSize, blockSize, 0, true);
 }
 
 // Hàm xử lý tín hiệu bàn phím, các arrow key
@@ -320,18 +432,22 @@ function changeDirection(e) {
     if (e.code == "ArrowUp" && velocityY != speed) {
         velocityX = 0;
         velocityY = -speed;
+        cur_direct = 90;
     }
     else if (e.code == "ArrowDown" && velocityY != -speed) {
         velocityX = 0;
         velocityY = speed;
+        cur_direct = -90;
     }
     else if (e.code == "ArrowLeft" && velocityX != speed) {
         velocityX = -speed;
         velocityY = 0;
+        cur_direct = 180;
     }
     else if (e.code == "ArrowRight" && velocityX != -speed) {
         velocityX = speed;
         velocityY = 0;
+        cur_direct = 0;
     }
 }
 
