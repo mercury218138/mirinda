@@ -62,6 +62,19 @@ for (let i = 0; i < 3; i++){
     snake_img[i].height = blockSize;
     snake_img[i].width = blockSize;
 }
+
+var sector_gift = [
+    new Image(), new Image(), new Image(), new Image(),
+    new Image(), new Image(), new Image()
+]
+
+for(let i = 0; i < 7; i++){
+    sector_gift[i].src = "./elements/"+ String((i % 5) + 5)  +".png";
+    // sector_gift[i].width = blockSize;
+    // sector_gift[i].height = sector_gift[i].width * 2;
+}
+
+var already_updated = false;
 // snake_img[0].rotate(90);
 
 
@@ -181,15 +194,17 @@ function lucky_wheel(){
     let wheel = document.getElementById("wheelOfFortune");
     wheel.style.display = "flex";
     const sectors = [
-        {color:"#f82", label:"Lucky", src: food},
-        {color:"#0bf", label:"10", src: food},
-        {color:"#fb0", label:"200", src: food},
-        {color:"#0fb", label:"50", src: food},
-        {color:"#b0f", label:"100", src: food},
-        {color:"#f0b", label:"5", src: food},
-        {color:"#bf0", label:"500", src: food},
+        {color:"#f82", label:"Việt quất", src: food},
+        {color:"#0bf", label:"Đá me", src: food},
+        {color:"#fb0", label:"Soda kem", src: food},
+        {color:"#0fb", label:"Xá xị", src: food},
+        {color:"#b0f", label:"Cam", src: food},
+        {color:"#f0b", label:"Việt quất", src: food},
+        {color:"#bf0", label:"Đá me", src: food},
     ];
-    
+    for (let i = 0; i < sectors.length; i++){
+        sectors[i].src = sector_gift[i];
+    }
     // Generate random float in range min-max:
     const rand = (m, M) => Math.random() * (M - m) + m;
     
@@ -239,7 +254,7 @@ function lucky_wheel(){
     const rotate = () => {
         const sector = sectors[getIndex()];
         ctx.canvas.style.transform = `rotate(${ang - PI / 2}rad)`;
-        elSpin.textContent = !angVel ? "SPIN" : sector.label;
+        elSpin.textContent = !angVel ? "Quay" : sector.label;
         elSpin.style.background = sector.color;
     };
     
@@ -361,10 +376,10 @@ function update() {
     }
     // console.log(cur_direct);
 
-    context.fillStyle= snake_color;
+    // context.fillStyle= snake_color;
     snakeX += velocityX * blockSize;
     snakeY += velocityY * blockSize;
-    
+    already_updated = true;
     
     // context.fillRect(snakeX, snakeY, blockSize, blockSize);
     // snake_img[0] = document.getElementById('snake_head');
@@ -422,9 +437,8 @@ function update() {
 
     // console.log(snakeX);
     // console.log(snakeY);
-
     for (let i = 0; i < snakeBody.length; i++) {
-        if (snakeX == snakeBody[i][0] && snakeY == snakeBody[i][1]) {
+        if (snakeX == snakeBody[i].x && snakeY == snakeBody[i].y) {
             gameOver = true;
             alert("Game Over");
         }
@@ -434,26 +448,31 @@ function update() {
 
 // Hàm xử lý tín hiệu bàn phím, các arrow key
 function changeDirection(e) {
-    if (e.code == "ArrowUp" && velocityY != speed) {
-        velocityX = 0;
-        velocityY = -speed;
-        cur_direct = 90;
-    }
-    else if (e.code == "ArrowDown" && velocityY != -speed) {
-        velocityX = 0;
-        velocityY = speed;
-        cur_direct = -90;
-    }
-    else if (e.code == "ArrowLeft" && velocityX != speed) {
-        velocityX = -speed;
-        velocityY = 0;
-        cur_direct = 180;
-    }
-    else if (e.code == "ArrowRight" && velocityX != -speed) {
-        velocityX = speed;
-        velocityY = 0;
-        cur_direct = 0;
-    }
+    // setTimeout(function(){
+        if (!already_updated) return;
+        if (e.code == "ArrowUp" && velocityY != speed) {
+            velocityX = 0;
+            velocityY = -speed;
+            cur_direct = 90;
+        }
+        else if (e.code == "ArrowDown" && velocityY != -speed) {
+            velocityX = 0;
+            velocityY = speed;
+            cur_direct = -90;
+        }
+        else if (e.code == "ArrowLeft" && velocityX != speed) {
+            velocityX = -speed;
+            velocityY = 0;
+            cur_direct = 180;
+        }
+        else if (e.code == "ArrowRight" && velocityX != -speed) {
+            velocityX = speed;
+            velocityY = 0;
+            cur_direct = 0;
+        }
+        already_updated = false;
+        //     update();
+        // }}, 200);
 }
 
 // Hàm tự động tìm chỗ trống và vẽ food
