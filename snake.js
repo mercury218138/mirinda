@@ -17,7 +17,7 @@ var context;
 var snakeX = blockSize * 5;
 var snakeY = blockSize * 5;
 
-var velocityX = 0;
+var velocityX = 1;
 var velocityY = 0;
 var speed = 1;//1 is unit
 
@@ -55,9 +55,9 @@ rule_board.src = "./elements/guide_to_play.png";
 var snake_img = [
     new Image(), new Image(), new Image()
 ]
-snake_img[0].src = "./elements/snake_head.png";
-snake_img[1].src = "./elements/snake_body.png";
-snake_img[2].src = "./elements/snake_tail.png";
+snake_img[0].src = "./elements/snake_head_1.png";
+snake_img[1].src = "./elements/snake_body_1.png";
+snake_img[2].src = "./elements/snake_tail_1.png";
 for (let i = 0; i < 3; i++){
     snake_img[i].height = blockSize;
     snake_img[i].width = blockSize;
@@ -74,13 +74,49 @@ var gameStop = false;
 var thresh = 10;
 
 // Bảng chỉnh màu, giá trị màu nằm bên trong cặp dấu ""
-var snake_color = "red";
+var snake_color = "#A9D17F";
 var board_color = "#df7272";
 var rule_board_color = "gray";
 
 var rule = `
 Hướng dẫn chơi
 `;
+
+function drawImage(img, x, y, width, height, deg, flip, flop, center) {
+
+    context.save();
+    if (deg == 180) {
+        flip = true;
+        deg = 0;
+    }
+    
+    if(typeof width === "undefined") width = img.width;
+    if(typeof height === "undefined") height = img.height;
+    if(typeof center === "undefined") center = false;
+    
+    // Set rotation point to center of image, instead of top/left
+    if(center) {
+        x -= width/2;
+        y -= height/2;
+    }
+    
+    // Set the origin to the center of the image
+    context.translate(x + width/2, y + height/2);
+    
+    // Rotate the canvas around the origin
+    var rad = 2 * Math.PI - deg * Math.PI / 180;    
+    context.rotate(rad);
+    
+    // Flip/flop the canvas
+    if(flip) flipScale = -1; else flipScale = 1;
+    if(flop) flopScale = -1; else flopScale = 1;
+    context.scale(flipScale, flopScale);
+    
+    // Draw the image    
+    context.drawImage(img, -width/2, -height/2, width, height);
+    
+    context.restore();
+}
 
 window.onload = function() {
     board = document.getElementById("board");
@@ -112,8 +148,12 @@ function guide_to_play(){
     document.getElementById('board_border').style.width = String(blockSize * (cols + 1)) + 'px';
 
     // document.getElementById('score').style.height = String(100 / 722 * screen_height) + 'px';
-    placeFood();
     start_time = 0;
+    // context.drawImage(food, foodX, foodY, food.width, food.height);
+    snakeBody.push({'x': snakeX - blockSize,'y': snakeY, 'degree': cur_direct});
+    snakeBody.push({'x': snakeX - blockSize,'y': snakeY, 'degree': cur_direct});
+    // drawImage(snake_img[0], snakeX, snakeY, blockSize, blockSize, cur_direct);
+    placeFood();
     update();
     // context.drawImage(arrow_key, board.width / 2 - arrow_key.width / 2, board.height / 2 - arrow_key.height / 2, arrow_key.width, arrow_key.height);
     document.addEventListener("keyup", start_game_funct);
@@ -129,7 +169,6 @@ function start_game_funct(e){
     const d = new Date();
     start_time = d.getTime();
     update();
-
     //test lucky_wheel() first
     // lucky_wheel();
     setInterval(update, 200); //100 milliseconds
@@ -254,44 +293,9 @@ function lucky_wheel(){
 // Hàm xử lý game
 var cur_direct = 0;
 
-
-function drawImage(img, x, y, width, height, deg, flip, flop, center) {
-
-    context.save();
-    if (deg == 180) {
-        flip = true;
-        deg = 0;
-    }
-    
-    if(typeof width === "undefined") width = img.width;
-    if(typeof height === "undefined") height = img.height;
-    if(typeof center === "undefined") center = false;
-    
-    // Set rotation point to center of image, instead of top/left
-    if(center) {
-        x -= width/2;
-        y -= height/2;
-    }
-    
-    // Set the origin to the center of the image
-    context.translate(x + width/2, y + height/2);
-    
-    // Rotate the canvas around the origin
-    var rad = 2 * Math.PI - deg * Math.PI / 180;    
-    context.rotate(rad);
-    
-    // Flip/flop the canvas
-    if(flip) flipScale = -1; else flipScale = 1;
-    if(flop) flopScale = -1; else flopScale = 1;
-    context.scale(flipScale, flopScale);
-    
-    // Draw the image    
-    context.drawImage(img, -width/2, -height/2, width, height);
-    
-    context.restore();
+function get_score(){
+    return snakeBody.length - 2;
 }
-
-
 function update() {    
     if (gameOver) {
         if (gameStop) return;
@@ -314,10 +318,10 @@ function update() {
     if (remain_time < 0) {
         gameStop = true;
         gameOver = true;
-        if (snakeBody.length >= thresh){
+        if (get_score() >= thresh){
             gameOver = false;
         }
-        document.getElementById('score_food').innerHTML = snakeBody.length;
+        document.getElementById('score_food').innerHTML = get_score();
         return;
     }
     else if (remain_time <= 5){
@@ -328,10 +332,10 @@ function update() {
     if (snakeBody.length >= 10){
         document.getElementById('score_food').style.color = 'green';
     }
-    document.getElementById('score_food').innerHTML = snakeBody.length;
+    document.getElementById('score_food').innerHTML = get_score();
     context.fillStyle=board_color;
     context.fillRect(0, 0, board.width, board.height);    
-    context.drawImage(food, foodX, foodY, food.width, food.height)
+    context.drawImage(food, foodX, foodY, food.width, food.height);
 
     // Condition satisfied to eat food
     let cond1 = (snakeX == foodX && snakeY == foodY);
@@ -389,6 +393,7 @@ function update() {
     for (let i = 0; i < snakeBody.length; i++) {
         if (0 <= snakeBody[i].x && snakeBody[i].x < cols*blockSize){
             if (0 <= snakeBody[i].y && snakeBody[i].y < rows*blockSize){
+                // context.fillStyle= snake_color;
                 // context.fillRect(snakeBody[i].x, snakeBody[i].y, blockSize, blockSize);
                 // context.drawImage(snake_img[1], snakeBody[i][0], snakeBody[i][1], blockSize, blockSize);
                 if (i == snakeBody.length - 1){
@@ -469,12 +474,15 @@ function placeFood() {
     if (foodX == snakeX && foodY == snakeY){
         food_on_body = true;
     }
+    if (foodX == snakeX && foodY + blockSize == snakeY){
+        food_on_body = true;
+    }
 
     while (food_on_body){
+        food_on_body = false;
 
         foodX = Math.floor(Math.random() * cols) * blockSize;
         foodY = Math.floor(Math.random() * (rows - 1)) * blockSize;
-        food_on_body = false;
         for (let i = 0; i < snakeBody.length; i++){
             if (snakeBody[i][0] == foodX && snakeBody[i][1] == foodY){
                 food_on_body = true; break;
@@ -484,6 +492,9 @@ function placeFood() {
             }
         }
         if (foodX == snakeX && foodY == snakeY){
+            food_on_body = true;
+        }
+        if (foodX == snakeX && foodY + blockSize == snakeY){
             food_on_body = true;
         }
     }
