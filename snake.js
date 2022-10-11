@@ -355,7 +355,7 @@ function update() {
         snakeBody[0] = {'x': snakeX,'y': snakeY, 'degree': cur_direct};
         //snakeBody[0] = [snakeX, snakeY];
     }
-    console.log(cur_direct);
+    // console.log(cur_direct);
 
     context.fillStyle= snake_color;
     snakeX += velocityX * blockSize;
