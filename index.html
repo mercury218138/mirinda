@@ -9,12 +9,16 @@
     </head>
 
     <body>
-        <audio controls autoplay loop style="position: absolute; opacity: 0;" id="theme_song">
-            <source src="./elements/Theme song.mp3" type="audio/mpeg">
+        <audio id='theme_song' loop>
+            <source src="./elements/Theme_song.mp3" type="audio/mpeg">
         </audio>
+        
         <!-- <h1 id="title-game">Snake Game</h1> -->
         <!-- Bảng điểm bên góc phải -->
+        <!-- <div id="mainpage" onclick="{ window.open('http://tdtudigital.com/tc01/group04/');}"></div> -->
+
         <div class="score">
+            <img src="./elements/sound.png" width="60" id="theme_song_icon" onclick="{document.getElementById('theme_song').play();}">
             <div class="score-name">Thời gian</div>
             <div class="score-content">
                 <p id="remain_time"></p>
@@ -26,7 +30,7 @@
         </div>   
         <!-- Màn hình trung tâm-->
         <!-- <img src="./elements/snake_head.png" id="snake_head" style="transform: rotate(90deg);"> -->
-        <div id="board_border">
+        <div id="board_border" >
             <!-- Màn hình game -->
             <canvas id="board"></canvas>
             <!-- Nút điều khiển -->
@@ -38,6 +42,6 @@
                 <!-- <img src="./elements/Website Mirinda 12.png" width="50" height="100"> -->
                 <div id="spin">SPIN asd asd asd as dasd as dasd asd asd as d</div>
             </div>  
-        </div>        
+        </div>   
     </body>
 </html>

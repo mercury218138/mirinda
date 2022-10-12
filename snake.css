@@ -100,6 +100,7 @@ body {
     color: white;
     font-size: 25px;  
     margin: 20px;
+    cursor: pointer;
 }
 
 #arrow_key{
@@ -150,4 +151,38 @@ body {
     border: 10px solid transparent;
     border-bottom-color: currentColor;
     border-top: none;
+}
+
+.animate_zoom{
+    display: flex;
+    position: absolute;
+    margin: 0 auto;
+    width: 70%;
+    animation-name: zoom-up;
+    animation-duration: 5s;
+    /* animation-delay: 1s; */
+    /* margin: 0px; */
+}
+
+/* #mainpage{
+    background-color: none;
+    display: block;
+    width: 300px;
+    height: 300px;
+    cursor: pointer;
+} */
+
+@keyframes zoom-up {
+    from {width: 5%;}
+    to {width: 70%;}
+}
+
+#theme_song_icon{
+    /* display: flex; */
+    /* margin: 0 auto; */
+    /* position: absolute; */
+    /* right: 10px; */
+    /* bottom: 10px; */
+    cursor: pointer;
+    padding-bottom: 10px;
 }

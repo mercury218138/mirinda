@@ -74,9 +74,22 @@ for(let i = 0; i < 7; i++){
     // sector_gift[i].height = sector_gift[i].width * 2;
 }
 
+// document.getElementById("winner").width = 0.7 * screen_width;
+var winner_noti = new Image();
+winner_noti.src = "./elements/chuc_ban_trung_1_san_pham.png";
+winner_noti.className = "animate_zoom";
+var loser_noti = new Image();
+loser_noti.src = "./elements/chuc_ban_may_man_lan_sau.png";
+loser_noti.className = "animate_zoom";
+
 var already_updated = false;
 // snake_img[0].rotate(90);
 
+// var theme_song = document.getElementById("theme_song");
+// theme_song.id = "theme_song";
+// theme_song.src = "./elements/Theme_song.mp3";
+// theme_song.autoplay = true;
+// theme_song.loop = true;
 
 arrow_key.id = "arrow_key";
 
@@ -94,7 +107,6 @@ var rule_board_color = "gray";
 var rule = `
 Hướng dẫn chơi
 `;
-
 function drawImage(img, x, y, width, height, deg, flip, flop, center) {
 
     context.save();
@@ -137,6 +149,7 @@ window.onload = function() {
     board.width = cols * blockSize;
     context = board.getContext("2d"); //used for drawing on the board
 
+    
     // Hàm hiện luật chơi
     // function rule_and_key(){
     //     context.fillStyle= rule_board_color;
@@ -155,7 +168,10 @@ window.onload = function() {
 
 // Hàm hướng dẫn dùng arrow key để chơi
 function guide_to_play(){
-    document.getElementById("rule_intro_button").remove();
+    
+    // document.getElementById('theme_song').autoplay = true;
+    // document.getElementById('theme_song').play();
+    document.getElementById("rule_intro_button").style.display = "none";
 
     document.getElementById('board_border').style.backgroundColor = 'white';
     document.getElementById('board_border').style.width = String(blockSize * (cols + 1)) + 'px';
@@ -279,6 +295,15 @@ function lucky_wheel(){
             if (angVel < angVelMin) {
                 isSpinning = false;
                 angVel = 0; 
+                setTimeout(function(){ 
+                    document.getElementById('board_border').appendChild(winner_noti); 
+                }, 1000);         
+                let tmp = document.getElementById("rule_intro_button");
+                tmp.style.display ='flex';
+                tmp.innerHTML = "Quay về trang chủ";
+                tmp.style.zIndex = 100;
+                tmp.style.background = "#B70006";
+                tmp.addEventListener("click", function(){window.open('http://tdtudigital.com/tc01/group04/')});       
             }
         }
         
@@ -297,6 +322,7 @@ function lucky_wheel(){
         isSpinning = true;
         isAccelerating = true;
         angVelMax = rand(0.25, 0.40);
+        
     });
 
     // INIT!
@@ -311,17 +337,21 @@ var cur_direct = 0;
 function get_score(){
     return snakeBody.length - 2;
 }
-function update() {    
-    if (gameOver) {
-        if (gameStop) return;
-        alert("Chúc bạn may mắn lần sau");
-        gameStop = true;
-        return;
-    }
-    else if (gameStop) {//winner
-        // alert("Winner!");
-        console.log("Winner!");
-        lucky_wheel();
+function update() {  
+    if (gameStop){
+        if (gameOver) return;
+        if (get_score() >= thresh){
+            lucky_wheel();
+        }
+        else{
+            document.getElementById('board_border').appendChild(loser_noti);
+            let tmp = document.getElementById("rule_intro_button");
+            tmp.style.display ='flex';
+            tmp.innerHTML = "Quay về trang chủ";
+            tmp.style.zIndex = 100;
+            tmp.style.background = "#B70006";
+            tmp.addEventListener("click", function(){window.open('http://tdtudigital.com/tc01/group04/')});
+        }
         gameOver = true;
         return;
     }
@@ -330,12 +360,8 @@ function update() {
     
     let remain_time = start_time != 0 ? timeTotal - Math.round((current_time - start_time) / 1000) : 30;
     
-    if (remain_time < 0) {
+    if (remain_time <= 0) {
         gameStop = true;
-        gameOver = true;
-        if (get_score() >= thresh){
-            gameOver = false;
-        }
         document.getElementById('score_food').innerHTML = get_score();
         return;
     }
@@ -344,7 +370,7 @@ function update() {
     }
     
     document.getElementById('remain_time').innerHTML = remain_time;
-    if (snakeBody.length >= 10){
+    if (get_score() >= thresh){
         document.getElementById('score_food').style.color = 'green';
     }
     document.getElementById('score_food').innerHTML = get_score();
@@ -439,8 +465,9 @@ function update() {
     // console.log(snakeY);
     for (let i = 0; i < snakeBody.length; i++) {
         if (snakeX == snakeBody[i].x && snakeY == snakeBody[i].y) {
-            gameOver = true;
-            alert("Game Over");
+            // gameOver = true;
+            gameStop = true;
+            // alert("Game Over");
         }
     }
     // drawImage(snake_img[0], snakeX, snakeY, blockSize, blockSize, 0, true);
