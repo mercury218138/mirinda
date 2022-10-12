@@ -298,6 +298,7 @@ function lucky_wheel(){
                 setTimeout(function(){ 
                     document.getElementById('board_border').appendChild(winner_noti); 
                 }, 1000);         
+                document.getElementById('board').style.display = 'none';
                 let tmp = document.getElementById("rule_intro_button");
                 tmp.style.display ='flex';
                 tmp.innerHTML = "Quay về trang chủ";
@@ -334,6 +335,24 @@ function lucky_wheel(){
 // Hàm xử lý game
 var cur_direct = 0;
 
+
+
+
+var isPlaying = false;
+
+function togglePlay() {
+    if (isPlaying) {
+        myAudio.pause();
+        document.getElementById('theme_song_icon').src = "./elements/muted_sound.png";
+    }
+    else{
+        myAudio.play();
+        document.getElementById('theme_song_icon').src = "./elements/sound.png";
+    }
+    isPlaying = !isPlaying;
+};
+
+
 function get_score(){
     return snakeBody.length - 2;
 }
@@ -345,6 +364,8 @@ function update() {
         }
         else{
             document.getElementById('board_border').appendChild(loser_noti);
+            document.getElementById('board').style.display = 'none';
+            document.getElementById('board_border').style.backgroundColor = 'unset';
             let tmp = document.getElementById("rule_intro_button");
             tmp.style.display ='flex';
             tmp.innerHTML = "Quay về trang chủ";

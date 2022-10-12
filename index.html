@@ -12,13 +12,15 @@
         <audio id='theme_song' loop>
             <source src="./elements/Theme_song.mp3" type="audio/mpeg">
         </audio>
-        
+        <script>
+            var myAudio = document.getElementById("theme_song");
+        </script>
         <!-- <h1 id="title-game">Snake Game</h1> -->
         <!-- Bảng điểm bên góc phải -->
         <!-- <div id="mainpage" onclick="{ window.open('http://tdtudigital.com/tc01/group04/');}"></div> -->
 
         <div class="score">
-            <img src="./elements/sound.png" width="60" id="theme_song_icon" onclick="{document.getElementById('theme_song').play();}">
+            <img src="./elements/muted_sound.png" width="60" id="theme_song_icon" onclick="togglePlay()" >
             <div class="score-name">Thời gian</div>
             <div class="score-content">
                 <p id="remain_time"></p>
