@@ -159,7 +159,7 @@ body {
     margin: 0 auto;
     width: 70%;
     animation-name: zoom-up;
-    animation-duration: 5s;
+    animation-duration: 2s;
     /* animation-delay: 1s; */
     /* margin: 0px; */
 }

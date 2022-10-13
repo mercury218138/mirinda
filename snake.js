@@ -210,13 +210,13 @@ function lucky_wheel(){
     let wheel = document.getElementById("wheelOfFortune");
     wheel.style.display = "flex";
     const sectors = [
-        {color:"#f82", label:"Việt quất", src: food},
-        {color:"#0bf", label:"Đá me", src: food},
-        {color:"#fb0", label:"Soda kem", src: food},
-        {color:"#0fb", label:"Xá xị", src: food},
-        {color:"#b0f", label:"Cam", src: food},
-        {color:"#f0b", label:"Việt quất", src: food},
-        {color:"#bf0", label:"Đá me", src: food},
+        {color:"#549dff", label:"Việt quất", src: food},
+        {color:"#97c887", label:"Đá me", src: food},
+        {color:"#ade1ef", label:"Soda kem", src: food},
+        {color:"#f47292", label:"Xá xị", src: food},
+        {color:"#f2e288", label:"Cam", src: food},
+        {color:"#ff9e4e", label:"Việt quất", src: food},
+        {color:"#eba7ff", label:"Đá me", src: food},
     ];
     for (let i = 0; i < sectors.length; i++){
         sectors[i].src = sector_gift[i];
@@ -270,6 +270,7 @@ function lucky_wheel(){
     const rotate = () => {
         const sector = sectors[getIndex()];
         ctx.canvas.style.transform = `rotate(${ang - PI / 2}rad)`;
+        elSpin.style.color = 'black';
         elSpin.textContent = !angVel ? "Quay" : sector.label;
         elSpin.style.background = sector.color;
     };
@@ -298,7 +299,7 @@ function lucky_wheel(){
                 setTimeout(function(){ 
                     document.getElementById('board_border').appendChild(winner_noti); 
                 }, 1000);         
-                document.getElementById('board').style.display = 'none';
+                document.getElementById('wheelOfFortune').style.display = 'none';
                 let tmp = document.getElementById("rule_intro_button");
                 tmp.style.display ='flex';
                 tmp.innerHTML = "Quay về trang chủ";
