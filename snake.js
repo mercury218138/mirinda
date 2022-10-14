@@ -305,7 +305,7 @@ function lucky_wheel(){
                 tmp.innerHTML = "Quay về trang chủ";
                 tmp.style.zIndex = 100;
                 tmp.style.background = "#B70006";
-                tmp.addEventListener("click", function(){window.open('http://tdtudigital.com/tc01/group04/')});       
+                tmp.addEventListener("click", function(){window.open('http://tdtudigital.com/tc01/group04/', '_self')});       
             }
         }
         
@@ -372,7 +372,7 @@ function update() {
             tmp.innerHTML = "Quay về trang chủ";
             tmp.style.zIndex = 100;
             tmp.style.background = "#B70006";
-            tmp.addEventListener("click", function(){window.open('http://tdtudigital.com/tc01/group04/')});
+            tmp.addEventListener("click", function(){window.open('http://tdtudigital.com/tc01/group04/', '_self')});       
         }
         gameOver = true;
         return;
